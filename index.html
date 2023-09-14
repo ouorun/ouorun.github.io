@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>images</title>
+</head>
+<body>
+    <img id="randomImage" src="" alt="Random Image">
+    <script>
+        // 获取页面上的图片元素
+        var randomImage = document.getElementById('randomImage');
+
+        // 用于存储已使用的图片文件名
+        var usedImages = [];
+
+        // 支持的图片格式
+        var allowedFormats = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
+
+        // 随机加载并显示图片
+        function loadRandomImage() {
+            // 获取当前目录下的所有文件
+            var imageFiles = [];
+            for (var i = 0; i < allowedFormats.length; i++) {
+                var format = allowedFormats[i];
+                var filesOfType = getImageFilesByFormat(format);
+                imageFiles = imageFiles.concat(filesOfType);
+            }
+
+            // 过滤掉已使用的图片
+            var unusedImages = imageFiles.filter(function (file) {
+                return usedImages.indexOf(file) === -1;
+            });
+
+            // 如果所有图片都已使用，重置已使用图片数组
+            if (unusedImages.length === 0) {
+                usedImages = [];
+                unusedImages = imageFiles;
+            }
+
+            // 随机选择一张图片
+            var randomIndex = Math.floor(Math.random() * unusedImages.length);
+            var randomImageFileName = unusedImages[randomIndex];
+
+            // 设置图片的 src 属性
+            randomImage.src = randomImageFileName;
+
+            // 将已使用的图片添加到数组中
+            usedImages.push(randomImageFileName);
+
+            // 设置页面标题为加载的图片文件名
+            document.title = randomImageFileName;
+        }
+
+        // 根据图片格式获取图片文件列表
+        function getImageFilesByFormat(format) {
+            var files = [];
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'get_image_files.php?format=' + format, false);
+            xhr.send();
+            if (xhr.status === 200) {
+                files = JSON.parse(xhr.responseText);
+            }
+            return files;
+        }
+
+        // 初始加载一张图片
+        loadRandomImage();
+    </script>
+</body>
+</html>
