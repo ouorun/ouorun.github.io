@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>随机图片</title>
+    <title>加载的图片的文件名</title>
 </head>
 <body>
     <img id="randomImage" src="" alt="Random Image">
     <script>
-        // 图片文件夹路径
-        var imageFolder = 'images/';
-
         // 获取页面上的图片元素
         var randomImage = document.getElementById('randomImage');
 
@@ -20,7 +17,7 @@
 
         // 随机加载并显示图片
         function loadRandomImage() {
-            // 获取图片文件夹中的所有图片文件
+            // 获取当前目录下的所有文件
             var imageFiles = [];
             for (var i = 0; i < allowedFormats.length; i++) {
                 var format = allowedFormats[i];
@@ -44,7 +41,7 @@
             var randomImageFileName = unusedImages[randomIndex];
 
             // 设置图片的 src 属性
-            randomImage.src = imageFolder + randomImageFileName;
+            randomImage.src = randomImageFileName;
 
             // 将已使用的图片添加到数组中
             usedImages.push(randomImageFileName);
